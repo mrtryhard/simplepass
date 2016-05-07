@@ -5,7 +5,8 @@ A simple password generator.
 Generate random ascii passwords with given parameters.
 
 ## How to use it
-```#include "generator.hpp"
+```
+#include "generator.hpp"
 // ...
 Generator g(length, allowSpecialChars); 
 char *pass = g.generate(); 
