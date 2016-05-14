@@ -11,7 +11,7 @@ To compile with clang and C++14, use the `make` command provided.
 simplepass -l [integer] -s -h
 ``` 
 
-* `-l [integer]` Specifies the length of the string where `integer` must be greater than zero and at maximum uint16_t max (65-ish).
+* `-l [integer]` Specifies the length of the string where `integer` must be greater than zero and at maximum uint16_t max (65 000-ish).
 * `-s` When passed, allows special characters.
 * `-h` When passed, shows help. 
 
