@@ -4,12 +4,24 @@ A simple password generator.
 ## What can it do
 Generate random ascii passwords with given parameters.
 
-## How to use it
+## Using compiled binary
+To compile with clang and C++14, use the `make` command provided.
+
+```
+simplepass -l [integer] -s -h
+``` 
+
+* `-l [integer]` Specifies the length of the string where `integer` must be greater than zero and at maximum uint16_t max (65-ish).
+* `-s` When passed, allows special characters.
+* `-h` When passed, shows help. 
+
+## Using headers && cpp
 ```
 #include "generator.hpp"
 // ...
 Generator g(length, allowSpecialChars); 
 char *pass = g.generate(); 
+/* You do not need to delete[] pass. When Generator goes out of scope, it will be freed. Be aware. */
 ```
 
 ## Goal 
