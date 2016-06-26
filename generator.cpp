@@ -35,25 +35,23 @@ char* Generator::generate() {
     // Regenerate buffer. 
     delete [] m_password;
     m_password = new char[m_length + 1]; 
-    
+	m_password[m_length] = '\0';
+
     // Generate the password, really.
     for(uint16_t i = 0; i < m_length; ++i) {
         m_password[i] = static_cast<char>(nextChar());
     }
-    
+
     return m_password;
 }
 
 int8_t Generator::nextChar() {
     UIDist dist(33, 127);
-    int8_t value = dist(m_rand);
+    int8_t value;
         
-    // If we do not allow special chars, regenerate.
-    if(!m_allowSpecial) {
-       while(!isNormal(value)) {
-           value = dist(m_rand);
-        }
-    }
+	do {
+		value = static_cast<int8_t>(dist(m_rand));
+	} while (!isNormal(value) && !m_allowSpecial);
     
     return value;
 }

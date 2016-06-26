@@ -6,7 +6,7 @@
 #include <limits>
 #include <random>
 
-typedef std::uniform_int_distribution<int8_t> UIDist;
+typedef std::uniform_int_distribution<int16_t> UIDist;
 
 /**
  * Generator class. 
