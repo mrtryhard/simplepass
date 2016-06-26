@@ -46,9 +46,15 @@ int main(int argc, char *argv[]) {
  *       - When an invalid flag is passed, it shows help.
  *       - The help parameter (-h) cancels out everything else.
  */
-string parseParameters(uint16_t &length, bool &special, const int argc, char *argv[]) {
+string parseParameters(uint16_t &length, bool &special, const int argc, char **argv) {
     string msg;
-    for(int i = 1; i < argc && msg.empty(); ++i) {
+
+	if (argc == 1) {
+		msg = showHelp();
+		return msg;
+	}
+
+	for(int i = 1; i < argc && msg.empty(); ++i) {
 
         if(strcmp(argv[i], "-l") == 0) {
             // Check if we at least got a next param.
