@@ -45,18 +45,18 @@ char* Generator::generate() {
     return m_password;
 }
 
-int8_t Generator::nextChar() {
+int16_t Generator::nextChar() {
     UIDist dist(33, 127);
-    int8_t value;
+    int16_t value;
         
 	do {
-		value = static_cast<int8_t>(dist(m_rand));
+		value = dist(m_rand);
 	} while (!isNormal(value) && !m_allowSpecial);
     
     return value;
 }
 
-bool Generator::isNormal(const int8_t c) const {
+bool Generator::isNormal(const int16_t c) const {
     // On classic ascii, [33, 47], [58, 64], [91,96], [123,126] are special chars. 
     if(c >= 33 && c <= 47) return false;
     if(c >= 58 && c <= 64) return false;

@@ -53,7 +53,7 @@ private:
      *
      * @returns Randomly generated ascii character. 
      */
-    int8_t nextChar();
+    int16_t nextChar();
     
     /**
      * Determines if the given char is a normal char in the ascii set.
@@ -61,7 +61,7 @@ private:
      * @param c Character to verify.
      * @returns False if a special char, true otherwise.
      */
-    bool isNormal(const int8_t c) const;
+    bool isNormal(const int16_t c) const;
 private:
     // STACK
     uint16_t m_length;          // Length of the generated password
@@ -71,5 +71,5 @@ private:
     RNG m_rand;                 
     
     // HEAP (owned)
-    char* m_password;
+    char *m_password;
 };
