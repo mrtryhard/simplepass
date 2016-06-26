@@ -4,8 +4,8 @@ A simple password generator.
 ## What can it do
 Generate random ascii passwords with given parameters.
 
-## Using compiled binary
-To compile with clang and C++14, use the `make` command provided.
+## Generating an executable
+To compile with clang and C++14, use the makefile provided.
 
 ```
 simplepass -l [integer] -s -h
@@ -15,7 +15,7 @@ simplepass -l [integer] -s -h
 * `-s` When passed, allows special characters.
 * `-h` When passed, shows help. 
 
-## Using headers && cpp
+## Use interface
 ```
 #include "generator.hpp"
 // ...
@@ -30,6 +30,7 @@ The goal is to eventually integrate with the Budgie desktop (Solus OS).
 
 ## Recommended compilation settings
 Works well with clang3.8+, with c++14 enabled. 
+Works well with Visual Studio Communauty 2015.
 
 ## Contributions 
 Any contributions is welcome. Create an issue to be heard.
