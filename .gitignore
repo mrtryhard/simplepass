@@ -26,3 +26,15 @@
 *.exe
 *.out
 *.app
+
+# vstudio
+*.sdf 
+obj/
+bin/
+x64/
+x86/
+Debug/
+Release/
+*vxcproj.filters
+*vxcproj.user
+*.VC.opendb
