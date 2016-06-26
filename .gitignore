@@ -35,6 +35,6 @@ x64/
 x86/
 Debug/
 Release/
-*vxcproj.filters
-*vxcproj.user
+*.vxcproj.filters
+*.vxcproj.user
 *.VC.opendb
