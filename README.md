@@ -29,8 +29,8 @@ Right now it is a very simple and naive password generator.
 The goal is to eventually integrate with the Budgie desktop (Solus OS).
 
 ## Recommended compilation settings
-Works well with clang3.8+, with c++14 enabled. 
-Works well with Visual Studio Communauty 2015.
+Works well with clang3.8+, with c++14 enabled.  
+Works well with Visual Studio Community 2015.
 
 ## Contributions 
 Any contributions is welcome. Create an issue to be heard.
