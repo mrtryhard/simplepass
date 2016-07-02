@@ -1,20 +1,14 @@
 #pragma once
 
-#include <cstdint>
 #include <climits>
-
 #include <limits>
-#include <random>
-
-typedef std::uniform_int_distribution<int16_t> UIDist;
+#include "common.hpp"
 
 /**
  * Generator class. 
  * Generates the password with the given parameters.
  */
 class Generator {
-    
-    using RNG = std::mt19937;    
 public:
     Generator(uint16_t len, bool special);
     ~Generator();

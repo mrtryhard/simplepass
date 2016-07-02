@@ -2,9 +2,6 @@
 
 Generator::Generator(uint16_t len, bool special) 
     : m_length(len), m_allowSpecial(special), m_password(nullptr) {
-    
-    // This is a core assumption, otherwise this class doesn't make sense.    
-    static_assert(CHAR_BIT == 8, "Generator requires signed char to be 8 bits!");
         
     m_rand.seed(std::random_device()());
 }

@@ -148,9 +148,15 @@
   <ItemGroup>
     <ClCompile Include="generator.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="quantity_rule.cpp" />
+    <ClCompile Include="range_rule.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common.hpp" />
     <ClInclude Include="generator.hpp" />
+    <ClInclude Include="quantity_rule.hpp" />
+    <ClInclude Include="range_rule.hpp" />
+    <ClInclude Include="rule.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
