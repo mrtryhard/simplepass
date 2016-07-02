@@ -38,3 +38,6 @@ Release/
 *.VC.opendb
 *.vs
 .vs/
+*.zip
+*.db
+*.txt
