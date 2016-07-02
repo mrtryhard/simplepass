@@ -26,7 +26,7 @@ bool RangeRule::isValid(const uint16_t value) const {
 	return m_exclude;
 }
 
-void RangeRule::generateRuleArray(const char * const bareRule, const uint16_t length) {
+inline void RangeRule::generateRuleArray(const char * const bareRule, const uint16_t length) {
 	uint8_t rangeStep = 1;
 	char first, last;
 
@@ -56,7 +56,7 @@ void RangeRule::generateRuleArray(const char * const bareRule, const uint16_t le
 	}
 }
 
-void RangeRule::appendChar(const char c) {
+inline void RangeRule::appendChar(const char c) {
 	m_rule.push_back(c);
 }
 

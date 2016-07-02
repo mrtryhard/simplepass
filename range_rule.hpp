@@ -11,8 +11,8 @@ public:
 
 private:
 	bool isValid(const uint16_t value) const;
-	void generateRuleArray(const char * const bareRule, const uint16_t length);
-	void appendChar(const char c);
+	inline void generateRuleArray(const char * const bareRule, const uint16_t length);
+	inline void appendChar(const char c);
 	void appendRange(const char first, const char last);
 private:
 	// STACK 
