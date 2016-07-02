@@ -1,5 +1,22 @@
 #include "range_rule.hpp"
 
+RangeRule::RangeRule(const bool withSpecials)
+	: m_exclude(false), m_dist(33, 127)
+{
+	char *bareRule;
+	uint16_t length = 0;
+	if (withSpecials) {
+		bareRule = " -~";
+		length = 4;
+	} else {
+		bareRule = "a-zA-Z0-9";
+		length = 10;
+	}
+
+	generateRuleArray(bareRule, length);
+	delete [] bareRule;
+}
+
 RangeRule::RangeRule(const char * const bareRule, const uint16_t length, const bool exclude)
 	: m_exclude(exclude), m_dist(33, 127)
 {
@@ -32,7 +49,7 @@ inline void RangeRule::generateRuleArray(const char * const bareRule, const uint
 
 	for (uint32_t i = 0; i < length; ++i) {
 		if (rangeStep == 2) {
-			if (bareRule[i] == '-') {
+			if (bareRule[i] == '-' && first != '\\') {
 				rangeStep = 3;
 			} else {
 				appendChar(first);

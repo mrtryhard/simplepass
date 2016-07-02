@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\rules">
+      <UniqueIdentifier>{182120e0-07b3-472a-991b-e42e90aeecb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\rules">
+      <UniqueIdentifier>{b5da7bc8-fec5-49a1-b17b-90be0f23b38e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="generator.cpp">
@@ -22,27 +28,33 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="quantity_rule.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\rules</Filter>
     </ClCompile>
     <ClCompile Include="range_rule.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\rules</Filter>
+    </ClCompile>
+    <ClCompile Include="slash_rule.cpp">
+      <Filter>Source Files\rules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rule.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="quantity_rule.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="common.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="quantity_rule.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
     <ClInclude Include="range_rule.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="rule.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="slash_rule.hpp">
+      <Filter>Header Files\rules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
