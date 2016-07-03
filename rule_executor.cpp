@@ -26,24 +26,29 @@ std::string RuleExecutor::executeAll() {
 
 void RuleExecutor::parseRule(const char * const rawRule) {
 	const char *it = rawRule;
+	bool isExclusion = false;
 
 	for (; *it != '\0' && !m_error; it++) {
 		ExecutionPair pair;
 		if (*it == '\\') {
 			it++;
 			if (isSlashRule(*it)) {
-				pair.first = slashToRange(*it);
+				pair.first = slashToRange(*it, isExclusion);
 				pair.second = CONST_ONE;
 			} else {
-				pair.first = std::make_shared<RangeRule>(it, 2);
+				pair.first = std::make_shared<RangeRule>(it, 2, isExclusion);
 				pair.second = CONST_ONE;
 			}
+			isExclusion = false;
 			m_rules.push_back(pair);
+		} else if (*it == '^') {
+			isExclusion = true;
 		} else if (*it == '[') {
 			it++;
-			m_error = parseRange(&it, pair);
+			m_error = parseRange(&it, pair, isExclusion);
 			if (m_error) break;
 			m_rules.push_back(pair);
+			isExclusion = false;
 		} else if (*it == '{') {
 			it++;
 			uint16_t first = 0, last = 0;
@@ -51,18 +56,19 @@ void RuleExecutor::parseRule(const char * const rawRule) {
 			if (m_error) break;
 			m_rules.back().second = std::make_shared<QuantityRule>(first, last);
 		} else {
-			pair.first = std::make_shared<RangeRule>(it, 2);
+			pair.first = std::make_shared<RangeRule>(it, 2, isExclusion);
 			pair.second = CONST_ONE;
 			m_rules.push_back(pair);
+			isExclusion = false;
 		}
 	}
 }
 
-bool RuleExecutor::parseRange(const char **it, ExecutionPair& pair) const {
+bool RuleExecutor::parseRange(const char **it, ExecutionPair& pair, const bool isWholeExclusion) const {
 	if (**it == '\0' || **it == ']') {
 		return true;
 	}
-	bool isExclusion = false;
+	bool isExclusion = false || isWholeExclusion;
 	if (**it == '^') {
 		(*it)++;
 		isExclusion = true;
@@ -139,14 +145,14 @@ bool RuleExecutor::isSlashRule(const char c) const {
 	}
 }
 
-std::shared_ptr<RangeRule> RuleExecutor::slashToRange(const char c) const {
+std::shared_ptr<RangeRule> RuleExecutor::slashToRange(const char c, const bool isExclusion) const {
 	switch (c) {
-		case 'd': return RULE_DIGIT;
-		case 'D': return RULE_DIGIT_EX;
-		case 'w': return RULE_WORD;
-		case 'W': return RULE_WORD_EX;
-		case 's': return RULE_SPACE;
-		case 'S': return RULE_SPACE_EX;
+		case 'd': return isExclusion ? RULE_DIGIT_EX : RULE_DIGIT;
+		case 'D': return isExclusion ? RULE_DIGIT : RULE_DIGIT_EX;
+		case 'w': return isExclusion ? RULE_WORD_EX : RULE_WORD;
+		case 'W': return isExclusion ? RULE_WORD : RULE_WORD_EX;
+		case 's': return isExclusion ? RULE_SPACE_EX : RULE_SPACE;
+		case 'S': return isExclusion ? RULE_SPACE : RULE_SPACE_EX;
 		case '.': return RULE_DOT;
 		default: return RULE_SPACE_EX;
 	}

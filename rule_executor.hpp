@@ -53,7 +53,7 @@ private:
 	 * @param pair ExecutionPair (<RangeRule, QuantityRule>) reference.
 	 * @returns True if an error occured. 
 	 */
-	bool parseRange(const char **it, ExecutionPair& pair) const;
+	bool parseRange(const char **it, ExecutionPair& pair, const bool isWholeExclusion) const;
 
 	/**
 	 * Parses the quantity rule (e.g. {...})
@@ -80,7 +80,7 @@ private:
 	 * @param c SlashRule 
 	 * @returns Shared pointer to the RangeRule.
 	 */
-	std::shared_ptr<RangeRule> slashToRange(const char c) const;
+	std::shared_ptr<RangeRule> slashToRange(const char c, const bool isExclusion) const;
 
 private:
 	bool m_error;
