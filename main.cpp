@@ -8,6 +8,7 @@
 #include <sstream>
 
 #include "generator.hpp"
+#include "rule_executor.hpp"
 
 using std::string;
 
@@ -55,8 +56,21 @@ string parseParameters(uint16_t &length, bool &special, const int argc, char **a
 	}
 
 	for(int i = 1; i < argc && msg.empty(); ++i) {
+		if (strcmp(argv[i], "-r") == 0) {
+			if ((i + 1) >= argc) {
+				msg = "Option error: -r requires a rule.";
+				break;
+			}
 
-        if(strcmp(argv[i], "-l") == 0) {
+			RuleExecutor re(argv[i + 1]);
+			if (re.isError()) {
+				msg = "Option error: rule is invalid. Check syntax.";
+				break;
+			}
+
+			msg = re.executeAll();
+			break;
+		} else if(strcmp(argv[i], "-l") == 0) {
             // Check if we at least got a next param.
             if((i+1) >= argc) {
                 msg = "Option error: -l requires an integer parameter.";

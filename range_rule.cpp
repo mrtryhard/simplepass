@@ -31,7 +31,7 @@ char RangeRule::getChar() {
 	do {
 		value = m_dist(m_rand);
 	} while (!isValid(value));
-
+	
 	return static_cast<char>(value);
 }
 

@@ -150,6 +150,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="quantity_rule.cpp" />
     <ClCompile Include="range_rule.cpp" />
+    <ClCompile Include="rule_executor.cpp" />
     <ClCompile Include="slash_rule.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +159,7 @@
     <ClInclude Include="quantity_rule.hpp" />
     <ClInclude Include="range_rule.hpp" />
     <ClInclude Include="rule.hpp" />
+    <ClInclude Include="rule_executor.hpp" />
     <ClInclude Include="slash_rule.hpp" />
   </ItemGroup>
   <ItemGroup>
