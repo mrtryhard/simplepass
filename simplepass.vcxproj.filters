@@ -27,16 +27,16 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="quantity_rule.cpp">
+    <ClCompile Include="rules\quantity_rule.cpp">
       <Filter>Source Files\rules</Filter>
     </ClCompile>
-    <ClCompile Include="range_rule.cpp">
+    <ClCompile Include="rules\range_rule.cpp">
       <Filter>Source Files\rules</Filter>
     </ClCompile>
-    <ClCompile Include="slash_rule.cpp">
+    <ClCompile Include="rules\rule_executor.cpp">
       <Filter>Source Files\rules</Filter>
     </ClCompile>
-    <ClCompile Include="rule_executor.cpp">
+    <ClCompile Include="rules\slash_rule.cpp">
       <Filter>Source Files\rules</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,23 +47,24 @@
     <ClInclude Include="common.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="quantity_rule.hpp">
+    <ClInclude Include="rules\range_rule.hpp">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="range_rule.hpp">
+    <ClInclude Include="rules\quantity_rule.hpp">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="rule.hpp">
+    <ClInclude Include="rules\rule_executor.hpp">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="slash_rule.hpp">
+    <ClInclude Include="rules\slash_rule.hpp">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
-    <ClInclude Include="rule_executor.hpp">
+    <ClInclude Include="rules\rule.hpp">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="README.md" />
   </ItemGroup>
 </Project>

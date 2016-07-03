@@ -148,22 +148,23 @@
   <ItemGroup>
     <ClCompile Include="generator.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="quantity_rule.cpp" />
-    <ClCompile Include="range_rule.cpp" />
-    <ClCompile Include="rule_executor.cpp" />
-    <ClCompile Include="slash_rule.cpp" />
+    <ClCompile Include="rules\quantity_rule.cpp" />
+    <ClCompile Include="rules\range_rule.cpp" />
+    <ClCompile Include="rules\rule_executor.cpp" />
+    <ClCompile Include="rules\slash_rule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.hpp" />
     <ClInclude Include="generator.hpp" />
-    <ClInclude Include="quantity_rule.hpp" />
-    <ClInclude Include="range_rule.hpp" />
-    <ClInclude Include="rule.hpp" />
-    <ClInclude Include="rule_executor.hpp" />
-    <ClInclude Include="slash_rule.hpp" />
+    <ClInclude Include="rules\quantity_rule.hpp" />
+    <ClInclude Include="rules\range_rule.hpp" />
+    <ClInclude Include="rules\rule.hpp" />
+    <ClInclude Include="rules\rule_executor.hpp" />
+    <ClInclude Include="rules\slash_rule.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
