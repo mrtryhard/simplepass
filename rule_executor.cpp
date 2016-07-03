@@ -34,11 +34,12 @@ void RuleExecutor::parseRule(const char * const rawRule) {
 			it++;
 			if (isSlashRule(*it)) {
 				pair.first = slashToRange(*it, isExclusion);
-				pair.second = CONST_ONE;
+			} else if (*it == '\0') {
+				pair.first = std::make_shared<RangeRule>((it - 1), 2, isExclusion);
 			} else {
 				pair.first = std::make_shared<RangeRule>(it, 2, isExclusion);
-				pair.second = CONST_ONE;
 			}
+			pair.second = CONST_ONE;
 			isExclusion = false;
 			m_rules.push_back(pair);
 		} else if (*it == '^') {

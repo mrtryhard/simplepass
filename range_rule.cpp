@@ -1,5 +1,4 @@
 #include "range_rule.hpp"
-#include <iostream>
 
 RangeRule::RangeRule(const bool withSpecials)
 	: m_exclude(false), m_dist(32, 127)
