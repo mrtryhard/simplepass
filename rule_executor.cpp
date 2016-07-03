@@ -4,7 +4,7 @@ RuleExecutor::RuleExecutor(const char * const rawRule) {
 	parseRule(rawRule);
 }
 
-bool RuleExecutor::isError() const {
+bool RuleExecutor::isError() const noexcept {
 	return m_error;
 }
 
@@ -132,7 +132,7 @@ bool RuleExecutor::parseQuantity(const char **it, uint16_t& first, uint16_t& las
 	return false;
 }
 
-bool RuleExecutor::isSlashRule(const char c) const {
+bool RuleExecutor::isSlashRule(const char c) const noexcept {
 	switch (c) {
 		case 'd': return true;
 		case 'D': return true;
@@ -145,7 +145,7 @@ bool RuleExecutor::isSlashRule(const char c) const {
 	}
 }
 
-std::shared_ptr<RangeRule> RuleExecutor::slashToRange(const char c, const bool isExclusion) const {
+std::shared_ptr<RangeRule> RuleExecutor::slashToRange(const char c, const bool isExclusion) const noexcept {
 	switch (c) {
 		case 'd': return isExclusion ? RULE_DIGIT_EX : RULE_DIGIT;
 		case 'D': return isExclusion ? RULE_DIGIT : RULE_DIGIT_EX;

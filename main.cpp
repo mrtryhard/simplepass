@@ -1,4 +1,3 @@
-#include <cstring>
 #include <cstdlib>
 #include <cstdint>
 
@@ -102,12 +101,12 @@ string parseParameters(uint16_t &length, bool &special, const int argc, char **a
  * Note: - This function will return the parsed length in the length parameter.
  *       - If integer is <= 0, it will be left at 0. 
  *       - If integer is > uint16_t max value, it will set length at uint16_t max value.
- *       - When given bad parameter, atoi returns 0, which remains an invalid parameter. 
+ *       - When given bad parameter, stoi returns 0, which remains an invalid parameter. 
  */
 string parseLengthParameter(uint16_t &length, char *rawLength) {
     constexpr uint16_t max_length = std::numeric_limits<uint16_t>::max();
 
-    int parsedLength = atoi(rawLength);
+    int parsedLength = std::stoi(rawLength);
     
     if(parsedLength > max_length) {
         length = max_length;
@@ -117,7 +116,7 @@ string parseLengthParameter(uint16_t &length, char *rawLength) {
     } else {
         length = static_cast<uint16_t>(parsedLength);   
     }
-            
+    
     return string();
 }
 

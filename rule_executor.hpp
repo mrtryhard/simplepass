@@ -20,6 +20,7 @@ private:
 	const std::shared_ptr<RangeRule> RULE_WORD_EX = std::make_shared<RangeRule>("a-zA-Z", 7, true);
 	const std::shared_ptr<RangeRule> RULE_DIGIT = std::make_shared<RangeRule>("0-9", 4);
 	const std::shared_ptr<RangeRule> RULE_DIGIT_EX = std::make_shared<RangeRule>("0-9", 4, true);
+	const std::shared_ptr<QuantityRule> CONST_ONE = std::make_shared<QuantityRule>(1, 1);
 
 public:
 	/**
@@ -31,7 +32,7 @@ public:
 	 * Return wether or not the RuleExecutor is in error. 
 	 * @returns True if in error, false otherwise. 
 	 */
-	bool isError() const;
+	bool isError() const noexcept;
 
 	/**
 	 * Executes the rule set to generate the defined string. 
@@ -72,7 +73,7 @@ private:
 	 * @param c Character
 	 * @returns True if the character is a slash rule.
 	 */
-	bool isSlashRule(const char c) const;
+	bool isSlashRule(const char c) const noexcept;
 
 	/**
 	 * Gets the corresponding RangeRule of the SlashRule. 
@@ -80,10 +81,9 @@ private:
 	 * @param c SlashRule 
 	 * @returns Shared pointer to the RangeRule.
 	 */
-	std::shared_ptr<RangeRule> slashToRange(const char c, const bool isExclusion) const;
+	std::shared_ptr<RangeRule> slashToRange(const char c, const bool isExclusion) const noexcept;
 
 private:
 	bool m_error;
 	std::vector<ExecutionPair> m_rules;
-	const std::shared_ptr<QuantityRule> CONST_ONE = std::make_shared<QuantityRule>(1, 1);
 };
