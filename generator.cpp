@@ -44,16 +44,16 @@ char* Generator::generate() {
 
 int16_t Generator::nextChar() {
     UIDist dist(33, 127);
-    int16_t value;
+    uint16_t value;
         
 	do {
 		value = dist(m_rand);
 	} while (!isNormal(value) && !m_allowSpecial);
     
-    return value;
+    return static_cast<int16_t>(value);
 }
 
-bool Generator::isNormal(const int16_t c) const {
+bool Generator::isNormal(const uint16_t c) const {
     // On classic ascii, [33, 47], [58, 64], [91,96], [123,126] are special chars. 
     if(c >= 33 && c <= 47) return false;
     if(c >= 58 && c <= 64) return false;

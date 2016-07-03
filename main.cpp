@@ -1,3 +1,4 @@
+#include <cstring>
 #include <cstdlib>
 #include <cstdint>
 
@@ -7,7 +8,7 @@
 #include <sstream>
 
 #include "generator.hpp"
-#include "rule_executor.hpp"
+#include "rules/rule_executor.hpp"
 
 using std::string;
 

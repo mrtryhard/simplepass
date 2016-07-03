@@ -54,7 +54,7 @@ private:
      * @param c Character to verify.
      * @returns False if a special char, true otherwise.
      */
-    bool isNormal(const int16_t c) const;
+    bool isNormal(const uint16_t c) const;
 private:
     // STACK
     uint16_t m_length;          // Length of the generated password

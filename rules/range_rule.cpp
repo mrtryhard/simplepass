@@ -3,14 +3,14 @@
 RangeRule::RangeRule(const bool withSpecials)
 	: m_exclude(false), m_dist(32, 127)
 {
-	char *bareRule;
+	char *bareRule = nullptr;
 	uint16_t length = 0;
 	if (withSpecials) {
-		bareRule = " -~";
 		length = 4;
+		bareRule = new char[length] {' ', '-', '~', '\0'};
 	} else {
-		bareRule = "a-zA-Z0-9";
 		length = 10;
+		bareRule = new char[10] {'a', '-', 'z', 'A', '-', 'Z', '0', '-', '9', '\0'};
 	}
 
 	generateRuleArray(bareRule, length);
@@ -47,7 +47,7 @@ bool RangeRule::isValid(const uint16_t value) const {
 
 inline void RangeRule::generateRuleArray(const char * const bareRule, const uint16_t length) {
 	uint8_t rangeStep = 1;
-	char first;
+	char first = 0;
 
 	for (uint32_t i = 0; i < length; ++i) {
 		if (rangeStep == 1) {
