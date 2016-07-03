@@ -14,9 +14,9 @@ std::string RuleExecutor::executeAll() {
 
 	for (auto&& it = m_rules.begin(); it != m_rules.end(); it++) {
 		uint16_t length = (*it).second.get()->getQuantity();
-		
+
 		for (uint16_t i = 0; i < length; ++i) {
-			ss << (*it).first.get()->getChar();
+			ss << std::noskipws << (*it).first.get()->getChar();
 		}
 	}
 
@@ -29,7 +29,17 @@ void RuleExecutor::parseRule(const char * const rawRule) {
 
 	for (; *it != '\0' && !m_error; it++) {
 		ExecutionPair pair;
-		if (*it == '[') {
+		if (*it == '\\') {
+			it++;
+			if (isSlashRule(*it)) {
+				pair.first = slashToRange(*it);
+				pair.second = CONST_ONE;
+			} else {
+				pair.first = std::make_shared<RangeRule>(it, 2);
+				pair.second = CONST_ONE;
+			}
+			m_rules.push_back(pair);
+		} else if (*it == '[') {
 			it++;
 			m_error = parseRange(&it, pair);
 			if (m_error) break;
@@ -48,7 +58,7 @@ void RuleExecutor::parseRule(const char * const rawRule) {
 	}
 }
 
-bool RuleExecutor::parseRange(const char **it, ExecutionPair& pair) {
+bool RuleExecutor::parseRange(const char **it, ExecutionPair& pair) const {
 	if (**it == '\0' || **it == ']') {
 		return true;
 	}
@@ -77,7 +87,7 @@ bool RuleExecutor::parseRange(const char **it, ExecutionPair& pair) {
 	return false;
 }
 
-bool RuleExecutor::parseQuantity(const char **it, uint16_t& first, uint16_t& last) {
+bool RuleExecutor::parseQuantity(const char **it, uint16_t& first, uint16_t& last) const {
 	if (m_rules.size() <= 0) {
 		return true;
 	}
@@ -116,7 +126,7 @@ bool RuleExecutor::parseQuantity(const char **it, uint16_t& first, uint16_t& las
 	return false;
 }
 
-bool RuleExecutor::isSlash(const char c) const {
+bool RuleExecutor::isSlashRule(const char c) const {
 	switch (c) {
 		case 'd': return true;
 		case 'D': return true;
@@ -126,5 +136,18 @@ bool RuleExecutor::isSlash(const char c) const {
 		case 'S': return true;
 		case '.': return true;
 		default: return false;
+	}
+}
+
+std::shared_ptr<RangeRule> RuleExecutor::slashToRange(const char c) const {
+	switch (c) {
+		case 'd': return RULE_DIGIT;
+		case 'D': return RULE_DIGIT_EX;
+		case 'w': return RULE_WORD;
+		case 'W': return RULE_WORD_EX;
+		case 's': return RULE_SPACE;
+		case 'S': return RULE_SPACE_EX;
+		case '.': return RULE_DOT;
+		default: return RULE_SPACE_EX;
 	}
 }
