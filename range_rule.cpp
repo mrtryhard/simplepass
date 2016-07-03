@@ -24,6 +24,8 @@ RangeRule::RangeRule(const char * const bareRule, const uint16_t length, const b
 }
 
 char RangeRule::getChar() {
+	if (m_rule.size() <= 0) return '\0';
+
 	uint16_t value = 0;
 	
 	do {
@@ -45,30 +47,23 @@ bool RangeRule::isValid(const uint16_t value) const {
 
 inline void RangeRule::generateRuleArray(const char * const bareRule, const uint16_t length) {
 	uint8_t rangeStep = 1;
-	char first, last;
+	char first;
 
 	for (uint32_t i = 0; i < length; ++i) {
-		if (rangeStep == 2) {
-			if (bareRule[i] == '-' && first != '\\') {
-				rangeStep = 3;
-			} else {
-				appendChar(first);
-				rangeStep = 1;
-			}
-		} else if (rangeStep == 3) {
-			last = bareRule[i];
-			
-			if (first < last) {
-				appendRange(first, last);
-			} else {
-				appendRange(last, first);
-			}
-			
-			rangeStep = 1;
-		} else {
-			// get the char
+		if (rangeStep == 1) {
 			first = bareRule[i];
 			rangeStep = 2;
+		} else if (rangeStep == 2) {
+			if (bareRule[i] != '-') {
+				appendChar(first);
+				first = bareRule[i];
+				rangeStep = 2;
+			} else {
+				rangeStep = 3;
+			}
+		} else {
+			appendRange(first, bareRule[i]);
+			rangeStep = 1;
 		}
 	}
 }
