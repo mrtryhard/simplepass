@@ -52,6 +52,11 @@ bool RuleExecutor::parseRange(const char **it, ExecutionPair& pair) {
 	if (**it == '\0' || **it == ']') {
 		return true;
 	}
+	bool isExclusion = false;
+	if (**it == '^') {
+		(*it)++;
+		isExclusion = true;
+	}
 
 	std::stringstream ss;
 
@@ -63,7 +68,8 @@ bool RuleExecutor::parseRange(const char **it, ExecutionPair& pair) {
 	
 	pair.first = std::make_shared<RangeRule>(
 			ss.str().c_str(),
-			static_cast<uint16_t>(ss.str().length())
+			static_cast<uint16_t>(ss.str().length()),
+			isExclusion
 		);
 
 	pair.second = CONST_ONE;
