@@ -17,9 +17,10 @@ string parseLengthParameter(uint16_t&, char*);
 string showHelp();
 
 int main(int argc, char *argv[]) {    
+
     bool special = false;
     uint16_t length = 0;
-    
+
     string msg = parseParameters(length, special, argc, argv);
     
     if(msg.empty()) {
@@ -67,7 +68,6 @@ string parseParameters(uint16_t &length, bool &special, const int argc, char **a
 				msg = "Option error: rule is invalid. Check syntax.";
 				break;
 			}
-
 			msg = re.executeAll();
 			break;
 		} else if(strcmp(argv[i], "-l") == 0) {
