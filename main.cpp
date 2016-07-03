@@ -129,14 +129,19 @@ string showHelp() {
     std::stringstream out;
     out << "Simple-Pass - Password generator." << std::endl;
     out << "Git repo: https://github.com/mrtryhard/simplepass" << std::endl;
+	out << "Documentation: https://github.com/mrtryhard/simplepass/wiki" << std::endl;
     out << std::endl;
     out << "Parameters:" << std::endl;
     
     out << "\t" << "-l [len]" << "\t";
-    out << "Defines password's length." << std::endl;
+    out << "Defines password's length." << std::endl << std::endl;
     
     out << "\t" << "-s" << "\t\t";
-    out << "Allows special characters." << std::endl;
+    out << "Allows special characters." << std::endl << std::endl;
     
+	out << "\t" << "-r [rule]" << "\t";
+	out << "Applies a regex-like rule to generate password. Disregards -l and -s.";
+	out << std::endl;
+
     return out.str();
 }
