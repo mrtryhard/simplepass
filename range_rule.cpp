@@ -1,7 +1,8 @@
 #include "range_rule.hpp"
+#include <iostream>
 
 RangeRule::RangeRule(const bool withSpecials)
-	: m_exclude(false), m_dist(33, 127)
+	: m_exclude(false), m_dist(32, 127)
 {
 	char *bareRule;
 	uint16_t length = 0;
@@ -18,7 +19,7 @@ RangeRule::RangeRule(const bool withSpecials)
 }
 
 RangeRule::RangeRule(const char * const bareRule, const uint16_t length, const bool exclude)
-	: m_exclude(exclude), m_dist(33, 127)
+	: m_exclude(exclude), m_dist(32, 127)
 {
 	generateRuleArray(bareRule, length);
 }
