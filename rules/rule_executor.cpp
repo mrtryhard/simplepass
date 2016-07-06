@@ -56,6 +56,11 @@ void RuleExecutor::parseRule(const char * const rawRule) {
 			m_error = parseQuantity(&it, first, last);
 			if (m_error) break;
 			m_rules.back().second = std::make_shared<QuantityRule>(first, last);
+		} else if (*it == '.') {
+			// The dot cannot be excluded as per \. is already defined.
+			pair.first = std::make_shared<RangeRule>(true);
+			pair.second = CONST_ONE;
+			m_rules.push_back(pair);
 		} else {
 			pair.first = std::make_shared<RangeRule>(it, 2, isExclusion);
 			pair.second = CONST_ONE;
