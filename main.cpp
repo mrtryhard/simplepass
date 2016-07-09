@@ -7,8 +7,7 @@
 using std::string;
 typedef std::numeric_limits<uint16_t> limits16;
 
-string showHelp();
-
+string showHelp(const string& command);
 bool in_string(const char * const src, const char str);
 
 int main(int argc, char *argv[]) {
@@ -17,7 +16,8 @@ int main(int argc, char *argv[]) {
 	bool isShowHelp = false;
 	bool isError = false;
 	string result;
-	
+	string helpCommand;
+
 	reb.addAscii()
 		.addDigits();
 
@@ -29,6 +29,9 @@ int main(int argc, char *argv[]) {
 		if (argv[i][0] == '-') {
 			// -h
 			if (in_string(argv[i], 'h')) {
+				if ((i + 1) < argc) {
+					helpCommand = argv[i + 1];
+				} 
 				isShowHelp = true;
 				break;
 			}
@@ -89,7 +92,7 @@ int main(int argc, char *argv[]) {
 	result = reb.getExecutor().executeAll();
 
 	if (isShowHelp) {
-		result = showHelp();
+		result = showHelp(helpCommand);
 	}
 
 	std::cout << result;
@@ -111,23 +114,63 @@ bool in_string(const char * const src, const char c) {
  * Shows help.
  * -h
  */
-string showHelp() {
+string showHelp(const string& command) {
 	std::stringstream out;
-	out << "Simple-Pass - Password generator." << std::endl;
-	out << "Git repo: https://github.com/mrtryhard/simplepass" << std::endl;
-	out << "Documentation: https://github.com/mrtryhard/simplepass/wiki" << std::endl;
-	out << std::endl;
-	out << "Parameters:" << std::endl;
+	if (command == "-l") {
+		out << "-l [length]" << std::endl;
+		out << "Length setter. Defines the total length of the password. Overridden by -r." << std::endl;
+		out << "Must be a valid integer. Between " << limits16::min() << " and ";
+		out << limits16::max() << " characters inclusively." << std::endl;
+		out << "Example: " << "simplepass -l 20" << std::endl;
+	} else if (command == "-s") {
+		out << "-s" << std::endl; 
+		out << "Special characters setter. Allows to have special characters in generated password.";
+		out << std::endl; 
+		out << "Example: " << "simplepass -l 20 -s" << std::endl;
+	} else if (command == "-r") {
+		out << "-r [rule]" << std::endl;
+		out << "Rules are regex-like patterns. " << std::endl; 
+		out << "  [] is the range rule." << std::endl;
+		out << "  {} is the quantity rule." << std::endl;
+		out << "  . is the universal character (when not escaped, nor in range)." << std::endl;
+		out << "  \\ is either the escaping character of the slash rule (\\W, \\w, \\s, \\S, \\., \\d, \\D)." << std::endl;
+		out << "  ^ is the exclusion character (see notes)." << std::endl << std::endl;
+		out << "Examples (rulse are passed between quotes):" << std::endl;
+		out << "  [abc]{4}\tWill choose 4 characters being either a, b or c." << std::endl;
+		out << std::endl;
+		out << "  [a-z]{10}\tWill choose 10 characters ranging from a to z. All lower cases." << std::endl;
+		out << std::endl;
+		out << "  [A-Z0-9]{5}\tWill choose 5 characters ranging from A to Z (upper case only) and/";
+		out << "or from 0 up to 9. e.g.: A1F9G ." << std::endl;
+		out << std::endl;
+		out << "  .{20}\t\tWill generate 20 characters including digits and special characters." << std::endl;
+		out << std::endl;
+		out << "  [.] or \\.\tWill generate a single dot." << std::endl;
+		out << std::endl << "Notes:" << std::endl;
+		out << "  - Slash rules are invalid within RangeRule (e.g. [\\da-z])." << std::endl;
+		out << "  - The exclusion character works everywhere (e.g. ^a is everything but a)." << std::endl;
+		out << "    ^[a-z] is everything that is not in the range (same as [^a-z])." << std::endl;
+		out << "  - Escaping character \\ works everywhere." << std::endl;
+	} else {
+		out << "Simple-Pass - Password generator." << std::endl;
+		out << "Git repo: https://github.com/mrtryhard/simplepass" << std::endl;
+		out << "Documentation: https://github.com/mrtryhard/simplepass/wiki" << std::endl;
+		out << std::endl;
+		out << "Parameters:" << std::endl;
 
-	out << "\t" << "-l [len]" << "\t";
-	out << "Defines password's length." << std::endl << std::endl;
+		out << "\t" << "-h [command]" << "\t";
+		out << "Gets the command help." << std::endl << std::endl;
 
-	out << "\t" << "-s" << "\t\t";
-	out << "Allows special characters." << std::endl << std::endl;
+		out << "\t" << "-l [len]" << "\t";
+		out << "Defines password's length." << std::endl << std::endl;
 
-	out << "\t" << "-r [rule]" << "\t";
-	out << "Applies a regex-like rule to generate password. Disregards -l and -s.";
-	out << std::endl;
+		out << "\t" << "-s" << "\t\t";
+		out << "Allows special characters." << std::endl << std::endl;
+
+		out << "\t" << "-r [rule]" << "\t";
+		out << "Applies a regex-like rule to generate password. Disregards -l and -s.";
+		out << std::endl;
+	}
 
 	return out.str();
 }
