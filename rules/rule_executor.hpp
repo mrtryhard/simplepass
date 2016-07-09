@@ -3,14 +3,16 @@
 #include <vector>
 #include <sstream>
 #include <string>
-#include <utility>
 
 #include "quantity_rule.hpp"
 #include "range_rule.hpp"
 #include "slash_rule.hpp"
 
 class RuleExecutor {
-	using ExecutionPair = std::pair<std::shared_ptr<RangeRule>, std::shared_ptr<QuantityRule>>;
+	struct ExecutionPair {
+		std::shared_ptr<RangeRule> first;
+		std::shared_ptr<QuantityRule> second;
+	};
 
 private:
 	const std::shared_ptr<RangeRule> RULE_DOT = std::make_shared<RangeRule>(".", 2);
@@ -26,7 +28,9 @@ public:
 	/**
 	 * @param rawRule Complete rule set (e.g. [abc]{5}a{10})
 	 */
-	RuleExecutor(const char * const rawRule);
+	RuleExecutor(const std::string& rawRule);
+	RuleExecutor(const RuleExecutor& re);
+	RuleExecutor& RuleExecutor::operator=(const RuleExecutor& re);
 
 	/**
 	 * Return wether or not the RuleExecutor is in error. 
@@ -82,6 +86,8 @@ private:
 	 * @returns Shared pointer to the RangeRule.
 	 */
 	std::shared_ptr<RangeRule> slashToRange(const char c, const bool isExclusion) const noexcept;
+
+	RuleExecutor& selfCopy(const RuleExecutor& re);
 
 private:
 	bool m_error;

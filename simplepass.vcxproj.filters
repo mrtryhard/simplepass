@@ -39,6 +39,9 @@
     <ClCompile Include="rules\slash_rule.cpp">
       <Filter>Source Files\rules</Filter>
     </ClCompile>
+    <ClCompile Include="rules\rule_executor_builder.cpp">
+      <Filter>Source Files\rules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generator.hpp">
@@ -60,6 +63,9 @@
       <Filter>Header Files\rules</Filter>
     </ClInclude>
     <ClInclude Include="rules\rule.hpp">
+      <Filter>Header Files\rules</Filter>
+    </ClInclude>
+    <ClInclude Include="rules\rule_executor_builder.hpp">
       <Filter>Header Files\rules</Filter>
     </ClInclude>
   </ItemGroup>

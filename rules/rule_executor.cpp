@@ -1,7 +1,26 @@
 #include "rule_executor.hpp"
 
-RuleExecutor::RuleExecutor(const char * const rawRule) {
-	parseRule(rawRule);
+RuleExecutor::RuleExecutor(const std::string& rawRule)
+ : m_error(false) 
+{
+	parseRule(rawRule.c_str());
+}
+
+RuleExecutor::RuleExecutor(const RuleExecutor& re) {
+	selfCopy(re);
+}
+
+RuleExecutor& RuleExecutor::operator=(const RuleExecutor& re) {
+	
+	return selfCopy(re);
+}
+
+RuleExecutor& RuleExecutor::selfCopy(const RuleExecutor& re) {
+	this->m_error = re.m_error;
+	for (auto&& it = re.m_rules.cbegin(); it != re.m_rules.cend(); ++it) {
+		this->m_rules.push_back(*it);
+	}
+	return *this;
 }
 
 bool RuleExecutor::isError() const noexcept {
@@ -20,7 +39,6 @@ std::string RuleExecutor::executeAll() {
 		}
 	}
 
-	ss << '\0';
 	return ss.str();
 }
 
@@ -69,7 +87,7 @@ void RuleExecutor::parseRule(const char * const rawRule) {
 		}
 	}
 }
-
+#include <iostream>
 bool RuleExecutor::parseRange(const char **it, ExecutionPair& pair, const bool isWholeExclusion) const {
 	if (**it == '\0' || **it == ']') {
 		return true;
@@ -87,10 +105,11 @@ bool RuleExecutor::parseRange(const char **it, ExecutionPair& pair, const bool i
 		(*it)++;
 	}
 	ss << '\0';
-	
+	std::string str(ss.str());
+
 	pair.first = std::make_shared<RangeRule>(
-			ss.str().c_str(),
-			static_cast<uint16_t>(ss.str().length()),
+			str.c_str(),
+			static_cast<uint16_t>(str.length()),
 			isExclusion
 		);
 
