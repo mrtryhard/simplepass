@@ -22,14 +22,8 @@ simplepass -r [rule] -l [integer] -s -h
 
 `simplepass -l 20 -s` is equivalent to `simplepass -r "\.{20}"`.
 
-## Use interface
-```
-#include "generator.hpp"
-// ...
-Generator g(length, allowSpecialChars); 
-char *pass = g.generate(); 
-/* You do not need to delete[] pass. When Generator goes out of scope, it will be freed. Be aware. */
-```
+## Interfacing 
+[[See docs|wiki/Interfacing-into-code]]
 
 ## Goal 
 Right now it is a very simple and naive password generator. 
@@ -37,7 +31,7 @@ The goal is to eventually integrate with the Budgie desktop (Solus OS).
 
 ## Recommended compilation settings
 Works well with clang3.8+, with c++14 enabled.  
-Works well with Visual Studio Community 2015.
+Works well with Visual Studio Community 2015 (msvc++ and clang3.7).
 
 ## Contributions 
 Any contributions is welcome. Create an issue to be heard.
