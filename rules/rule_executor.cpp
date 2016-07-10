@@ -38,8 +38,9 @@ std::string RuleExecutor::executeAll() {
 			ss << std::noskipws << (*it).first.get()->getChar();
 		}
 	}
-
-	return ss.str();
+	
+	std::string str(ss.str());
+	return str;
 }
 
 void RuleExecutor::parseRule(const char * const rawRule) {
@@ -87,11 +88,12 @@ void RuleExecutor::parseRule(const char * const rawRule) {
 		}
 	}
 }
-#include <iostream>
+
 bool RuleExecutor::parseRange(const char **it, ExecutionPair& pair, const bool isWholeExclusion) const {
 	if (**it == '\0' || **it == ']') {
 		return true;
 	}
+
 	bool isExclusion = false || isWholeExclusion;
 	if (**it == '^') {
 		(*it)++;

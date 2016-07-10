@@ -30,7 +30,7 @@ public:
 	 */
 	RuleExecutor(const std::string& rawRule);
 	RuleExecutor(const RuleExecutor& re);
-	RuleExecutor& RuleExecutor::operator=(const RuleExecutor& re);
+	RuleExecutor& operator=(const RuleExecutor& re);
 
 	/**
 	 * Return wether or not the RuleExecutor is in error. 

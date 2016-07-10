@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
 		result = showHelp(helpCommand);
 	}
 
-	std::cout << result;
+	std::cout << result << std::endl;
 
 	return 0;
 }
