@@ -77,9 +77,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IntDir>$(Configuration)\x86\</IntDir>
+    <OutDir>$(SolutionDir)$(Configuration)\x86\</OutDir>
+    <TargetExt>.exe</TargetExt>
+    <TargetName>$(ProjectName).x86</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IntDir>$(Configuration)\x64\</IntDir>
+    <OutDir>$(SolutionDir)$(Configuration)\x64\</OutDir>
+    <TargetName>$(ProjectName).x64</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -146,7 +153,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="generator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="rules\quantity_rule.cpp" />
     <ClCompile Include="rules\range_rule.cpp" />
@@ -156,7 +162,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.hpp" />
-    <ClInclude Include="generator.hpp" />
     <ClInclude Include="rules\quantity_rule.hpp" />
     <ClInclude Include="rules\range_rule.hpp" />
     <ClInclude Include="rules\rule.hpp" />
@@ -166,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="Makefile" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
