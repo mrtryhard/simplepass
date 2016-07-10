@@ -32,6 +32,9 @@ public:
 
 	RuleExecutorBuilder& setLength(const uint16_t length) noexcept;
 
+	RuleExecutorBuilder& clear() noexcept;
+	RuleExecutorBuilder& clearRule() noexcept;
+
 	/**
 	 * Will use the rule to generate the RuleExecutor 
 	 * Will ignore the previous set settings. 

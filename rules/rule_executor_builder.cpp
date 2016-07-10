@@ -75,6 +75,22 @@ RuleExecutorBuilder::setLength(const uint16_t length) noexcept {
 	return *this;
 }
 
+RuleExecutorBuilder&
+RuleExecutorBuilder::clear() noexcept {
+	m_length = 1;
+	m_digits = false;
+	m_lowerCaseAscii = false; 
+	m_upperCaseAscii = false; 
+	m_rawRule.clear();
+	m_specials = false;
+	return *this;
+}
+
+RuleExecutorBuilder&
+RuleExecutorBuilder::clearRule() noexcept {
+	m_rawRule.clear();
+	return *this;
+}
 
 RuleExecutorBuilder& 
 RuleExecutorBuilder::fromRule(const std::string& rawRule) noexcept {
