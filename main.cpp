@@ -38,6 +38,12 @@ int main(int argc, char *argv[]) {
 
 			// -r [rule]
 			if (in_string(argv[i], 'r')) {
+				if(argc > 3) {
+					isError = true;
+					result = "-r option cannot be used with other options.";
+					break;
+				}
+
 				if ((i + 1) < argc) {
 					reb.fromRule(argv[i + 1]);
 				} else {
@@ -85,7 +91,7 @@ int main(int argc, char *argv[]) {
 
 	if (isError) {
 		std::cout << result << std::endl;
-		std::cout << "Use -h to get a list of the options" << std::endl;
+		std::cout << "Use -h to get a list of the options." << std::endl;
 		return 1;
 	}
 
@@ -113,6 +119,8 @@ bool in_string(const char * const src, const char c) {
 /**
  * Shows help.
  * -h
+ * @param command Command to get help (e.g. "-l", "-h", "-s", "-r")
+ * @returns Help message.
  */
 string showHelp(const string& command) {
 	std::stringstream out;
