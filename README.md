@@ -23,7 +23,7 @@ simplepass -r [rule] -l [integer] -s -h
 `simplepass -l 20 -s` is equivalent to `simplepass -r "\.{20}"`.
 
 ## Interfacing 
-[[See docs|wiki/Interfacing-into-code]]
+See wiki/Interfacing-into-code
 
 ## Goal 
 Right now it is a very simple and naive password generator. 
