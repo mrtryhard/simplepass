@@ -13,54 +13,24 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\rules">
-      <UniqueIdentifier>{182120e0-07b3-472a-991b-e42e90aeecb4}</UniqueIdentifier>
+    <Filter Include="Source Files\parser">
+      <UniqueIdentifier>{437ad4a1-1cb5-4205-824a-cab8279e1d97}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\rules">
-      <UniqueIdentifier>{b5da7bc8-fec5-49a1-b17b-90be0f23b38e}</UniqueIdentifier>
+    <Filter Include="Header Files\parser">
+      <UniqueIdentifier>{7827ddd1-c97c-46f9-80d8-9a59d9308488}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="rules\quantity_rule.cpp">
-      <Filter>Source Files\rules</Filter>
-    </ClCompile>
-    <ClCompile Include="rules\range_rule.cpp">
-      <Filter>Source Files\rules</Filter>
-    </ClCompile>
-    <ClCompile Include="rules\rule_executor.cpp">
-      <Filter>Source Files\rules</Filter>
-    </ClCompile>
-    <ClCompile Include="rules\slash_rule.cpp">
-      <Filter>Source Files\rules</Filter>
-    </ClCompile>
-    <ClCompile Include="rules\rule_executor_builder.cpp">
-      <Filter>Source Files\rules</Filter>
+    <ClCompile Include="parser.cpp">
+      <Filter>Source Files\parser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="rules\range_rule.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="rules\quantity_rule.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="rules\rule_executor.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="rules\slash_rule.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="rules\rule.hpp">
-      <Filter>Header Files\rules</Filter>
-    </ClInclude>
-    <ClInclude Include="rules\rule_executor_builder.hpp">
-      <Filter>Header Files\rules</Filter>
+    <ClInclude Include="parser.hpp">
+      <Filter>Header Files\parser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

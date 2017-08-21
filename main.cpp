@@ -1,184 +1,101 @@
-#include <iostream>
-#include <sstream>
+#include "parser.hpp"
+
 #include <exception>
+#include <iostream>
+#include <iomanip>
+#include <cstring>
 
-#include "rules/rule_executor_builder.hpp"
+constexpr int FIRST_PARAM_POS = 1;
 
-using std::string;
-typedef std::numeric_limits<uint16_t> limits16;
+bool same(const char*, const char*) noexcept;
+std::string execute_basic(const int, const bool);
+std::string try_execute_rule(const int, const int, char**);
+std::string execute_rule(const char*);
+std::string show_help();
 
-string showHelp(const string& command);
-bool in_string(const char * const src, const char str);
-
-int main(int argc, char *argv[]) {
-	
-	RuleExecutorBuilder reb;
-	bool isShowHelp = false;
-	bool isError = false;
-	string result;
-	string helpCommand;
-
-	reb.addAscii()
-		.addDigits();
-
-	if (argc == 1) {
-		isShowHelp = true;
+void main(int argc, char** argv)
+{
+	if (argc == FIRST_PARAM_POS) {
+		std::cout << "Unsufficient parameters given." << std::endl;
+		std::cout << show_help();
+		return;
 	}
 
-	for (int i = 1; i < argc; ++i) {
-		if (argv[i][0] == '-') {
-			// -h
-			if (in_string(argv[i], 'h')) {
-				if ((i + 1) < argc) {
-					helpCommand = argv[i + 1];
-				} 
-				isShowHelp = true;
+	int length{ 0 };
+	bool allow_specials{ false };
+	try {
+		for (int index = FIRST_PARAM_POS; index < argc; index++) {
+			if (same("-r", argv[index]) || same("--rule", argv[index])) {
+				std::cout << try_execute_rule(index, argc, argv);
 				break;
-			}
+			} else if (same("-l", argv[index]) || same("--length", argv[index])) {
+				if(index + 1 == argc)
+					throw std::exception{ "Missing length for parameter -l." };
 
-			// -r [rule]
-			if (in_string(argv[i], 'r')) {
-				if(argc > 3) {
-					isError = true;
-					result = "-r option cannot be used with other options.";
-					break;
-				}
-
-				if ((i + 1) < argc) {
-					reb.fromRule(argv[i + 1]);
-				} else {
-					isError = true;
-					result = "-r expects a rule.";
-				}
-				break;
-			}
-
-			// -s 
-			if (in_string(argv[i], 's')) {
-				reb.addSpecialCharacters();
-			}
-
-			// -l [integer]
-			if (in_string(argv[i], 'l')) {
-				if ((i + 1) < argc) {
-					int realVal = 0;
-					try {
-						realVal = std::stoi(argv[i + 1]);
-					}
-					catch (...) {
-						isError = true;
-						result = "-l received invalid integer.";
-						break;
-					}
-
-					if (realVal < limits16::min() && realVal > limits16::max()) {
-						isError = true;
-						result = "-l received invalid integer.";
-						break;
-					}
-
-					uint16_t val = static_cast<uint16_t>(realVal);
-					reb.setLength(val);
-					i++;
-				} else {
-					isError = true;
-					result = "-l expects an integer.";
-					break;
-				}
+				length = std::atoi(argv[index + 1]);
+			} else if (same("-s", argv[index]) || same("--specials", argv[index])){
+				allow_specials = true;
 			}
 		}
+
+		//std::cout << execute_basic(length, allow_specials);
+	} catch(std::exception& ex)	{
+		std::cout << ex.what() << std::endl;
 	}
-
-	if (isError) {
-		std::cout << result << std::endl;
-		std::cout << "Use -h to get a list of the options." << std::endl;
-		return 1;
-	}
-
-	result = reb.getExecutor().executeAll();
-
-	if (isShowHelp) {
-		result = showHelp(helpCommand);
-	}
-
-	std::cout << result << std::endl;
-
-	return 0;
 }
 
-bool in_string(const char * const src, const char c) {
-	if (src == nullptr) return false;
-
-	for (const char *it = src; *it != '\0'; ++it) {
-		if (*it == c) return true;
+std::string execute_basic(const int length, const bool allow_specials)
+{
+	std::stringstream rule;
+	rule << "[a-zA-Z";
+	if(allow_specials) {
+		rule << " -/" << ":-@" << "\\[-`" << "{-~";
 	}
-
-	return false;
+	rule << "]{" << length << '}';
+	std::cout << rule.str() << std::endl;
+	return execute_rule(rule.str().c_str());
 }
 
-/**
- * Shows help.
- * -h
- * @param command Command to get help (e.g. "-l", "-h", "-s", "-r")
- * @returns Help message.
- */
-string showHelp(const string& command) {
+std::string try_execute_rule(const int current_index, const int argc, char** argv)
+{
+	const int next_index = current_index + 1;
+
+	if (next_index == argc)
+		throw std::exception{"Expected a rule after the '-r' flag."};
+
+	return execute_rule(argv[next_index]);
+}
+
+std::string execute_rule(const char* rule)
+{
+	simple::parser parser{ rule };
+	return parser.str();
+}
+
+bool same(const char* first, const char* second) noexcept
+{
+	return std::strcmp(first, second) == 0;
+}
+
+std::string show_help()
+{
+	constexpr const char* padw = "    ";
+
 	std::stringstream out;
-	if (command == "-l") {
-		out << "-l [length]" << std::endl;
-		out << "Length setter. Defines the total length of the password. Overridden by -r." << std::endl;
-		out << "Must be a valid integer. Between " << limits16::min() << " and ";
-		out << limits16::max() << " characters inclusively." << std::endl;
-		out << "Example: " << "simplepass -l 20" << std::endl;
-	} else if (command == "-s") {
-		out << "-s" << std::endl; 
-		out << "Special characters setter. Allows to have special characters in generated password.";
-		out << std::endl; 
-		out << "Example: " << "simplepass -l 20 -s" << std::endl;
-	} else if (command == "-r") {
-		out << "-r [rule]" << std::endl;
-		out << "Rules are regex-like patterns. " << std::endl; 
-		out << "  [] is the range rule." << std::endl;
-		out << "  {} is the quantity rule." << std::endl;
-		out << "  . is the universal character (when not escaped, nor in range)." << std::endl;
-		out << "  \\ is either the escaping character of the slash rule (\\W, \\w, \\s, \\S, \\., \\d, \\D)." << std::endl;
-		out << "  ^ is the exclusion character (see notes)." << std::endl << std::endl;
-		out << "Examples (rulse are passed between quotes):" << std::endl;
-		out << "  [abc]{4}\tWill choose 4 characters being either a, b or c." << std::endl;
-		out << std::endl;
-		out << "  [a-z]{10}\tWill choose 10 characters ranging from a to z. All lower cases." << std::endl;
-		out << std::endl;
-		out << "  [A-Z0-9]{5}\tWill choose 5 characters ranging from A to Z (upper case only) and/";
-		out << "or from 0 up to 9. e.g.: A1F9G ." << std::endl;
-		out << std::endl;
-		out << "  .{20}\t\tWill generate 20 characters including digits and special characters." << std::endl;
-		out << std::endl;
-		out << "  [.] or \\.\tWill generate a single dot." << std::endl;
-		out << std::endl << "Notes:" << std::endl;
-		out << "  - Slash rules are invalid within RangeRule (e.g. [\\da-z])." << std::endl;
-		out << "  - The exclusion character works everywhere (e.g. ^a is everything but a)." << std::endl;
-		out << "    ^[a-z] is everything that is not in the range (same as [^a-z])." << std::endl;
-		out << "  - Escaping character \\ works everywhere." << std::endl;
-	} else {
-		out << "Simple-Pass - Password generator." << std::endl;
-		out << "Git repo: https://github.com/mrtryhard/simplepass" << std::endl;
-		out << "Documentation: https://github.com/mrtryhard/simplepass/wiki" << std::endl;
-		out << std::endl;
-		out << "Parameters:" << std::endl;
-
-		out << "\t" << "-h [command]" << "\t";
-		out << "Gets the command help." << std::endl << std::endl;
-
-		out << "\t" << "-l [len]" << "\t";
-		out << "Defines password's length." << std::endl << std::endl;
-
-		out << "\t" << "-s" << "\t\t";
-		out << "Allows special characters." << std::endl << std::endl;
-
-		out << "\t" << "-r [rule]" << "\t";
-		out << "Applies a regex-like rule to generate password. Disregards -l and -s.";
-		out << std::endl;
-	}
+	out << "simplepass" << std::endl;
+	out << "mrtryhard @ mrtryhard.info" << std::endl;
+	out << std::endl;
+	out << "-h | --help" << std::endl;
+	out << padw << "Displays help (this)." << std::endl << std::endl;
+	out << "-r | --rule \"<rule>\"" << std::endl;
+	out << padw << "Uses the given rule to generate password." << std::endl;
+	out << padw << "<rule> is a minimalist regular expression-like syntax:" << std::endl << std::endl;
+	out << padw << padw << "{<number>} | {<num_range>} represents either a fixed quantity" << std::endl;
+	out << padw << padw << padw << "or a range. In case of a range, it will be randomly selected" << std::endl;
+	out << padw << padw << padw << "within the bound inclusively." << std::endl << std::endl;
+	out << padw << padw << "[<string>] | [<char_range>] represents a set from which a character" << std::endl;
+	out << padw << padw << padw << "will be randomly selected." << std::endl << std::endl;
+	out << padw << padw << "\\ is used to escape characters." << std::endl;
 
 	return out.str();
 }
