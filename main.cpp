@@ -1,56 +1,67 @@
 #include "parser.hpp"
 
+#include "main.hpp"
+
 #include <exception>
 #include <iostream>
 #include <iomanip>
 #include <cstring>
 
-constexpr int FIRST_PARAM_POS = 1;
-
-bool same(const char*, const char*) noexcept;
-std::string execute_basic(const int, const bool);
-std::string try_execute_rule(const int, const int, char**);
-std::string execute_rule(const char*);
-std::string show_help();
-
-void main(int argc, char** argv)
+int main(int argc, char** argv)
 {
 	if (argc == FIRST_PARAM_POS) {
 		std::cout << "Unsufficient parameters given." << std::endl;
 		std::cout << show_help();
-		return;
+		return RETCODE_ERROR;
 	}
 
-	int length{ 0 };
+	int password_length{ 0 };
 	bool allow_specials{ false };
+	bool is_rule{ false };
+	int index = FIRST_PARAM_POS;
 	try {
-		for (int index = FIRST_PARAM_POS; index < argc; index++) {
-			if (same("-r", argv[index]) || same("--rule", argv[index])) {
-				std::cout << try_execute_rule(index, argc, argv);
-				break;
-			} else if (same("-l", argv[index]) || same("--length", argv[index])) {
-				if(index + 1 == argc)
+		for ( ; index < argc && false == is_rule; index++) {
+			const char* arg = argv[index];
+			
+			if(same(SWITCH_SHORT_RULE, arg) || same(SWITCH_RULE, arg)) {
+				is_rule = true;
+			} else if (same(SWITCH_SHORT_LENGTH, arg) || same(SWITCH_LENGTH, arg)) {
+				
+				if (index + 1 == argc)
 					throw std::exception{ "Missing length for parameter -l." };
 
-				length = std::atoi(argv[index + 1]);
-			} else if (same("-s", argv[index]) || same("--specials", argv[index])){
+				password_length = std::atoi(argv[index + 1]);
+			} else if (same(SWITCH_SHORT_SPECIALS, arg) || same(SWITCH_SPECIALS, arg)) {
 				allow_specials = true;
 			}
 		}
 
-		//std::cout << execute_basic(length, allow_specials);
-	} catch(std::exception& ex)	{
-		std::cout << ex.what() << std::endl;
+		if (is_rule) {
+			std::cout << try_execute_rule(index, argc, argv);
+		} else {
+			std::cout << execute_basic(password_length, allow_specials);
+		}
 	}
+	catch (std::exception& ex) {
+		std::cout << ex.what() << std::endl;
+		return RETCODE_ERROR;
+	}
+
+	return RETCODE_SUCCESS;
 }
 
 std::string execute_basic(const int length, const bool allow_specials)
 {
+	if(length < 1)
+		throw std::exception{ "A password cannot be smaller than one (1) character long." };
+
 	std::stringstream rule;
 	rule << "[a-zA-Z";
-	if(allow_specials) {
+	
+	if (allow_specials) {
 		rule << " -/" << ":-@" << "\\[-`" << "{-~";
 	}
+
 	rule << "]{" << length << '}';
 	std::cout << rule.str() << std::endl;
 	return execute_rule(rule.str().c_str());
@@ -61,7 +72,7 @@ std::string try_execute_rule(const int current_index, const int argc, char** arg
 	const int next_index = current_index + 1;
 
 	if (next_index == argc)
-		throw std::exception{"Expected a rule after the '-r' flag."};
+		throw std::exception{ "Expected a rule after the '-r' flag." };
 
 	return execute_rule(argv[next_index]);
 }
@@ -69,7 +80,7 @@ std::string try_execute_rule(const int current_index, const int argc, char** arg
 std::string execute_rule(const char* rule)
 {
 	simple::parser parser{ rule };
-	return parser.str();
+	return parser.password();
 }
 
 bool same(const char* first, const char* second) noexcept

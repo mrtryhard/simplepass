@@ -16,12 +16,12 @@ namespace simple
 		std::stringstream result;
 		std::default_random_engine random_generator;
 	public:
-		parser(const std::string&);
+		explicit parser(const std::string&);
 		parser(parser&&) = delete;
 		parser(parser&) = delete;
 		parser& operator=(parser&) = delete;
 
-		std::string str() const;
+		std::string password() const;
 	private:
 		void parse_expression();
 		void parse_set();

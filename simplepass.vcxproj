@@ -161,6 +161,7 @@
     <ClCompile Include="parser.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="main.hpp" />
     <ClInclude Include="parser.hpp" />
   </ItemGroup>
   <ItemGroup>

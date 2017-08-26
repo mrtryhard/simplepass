@@ -17,7 +17,7 @@ namespace simple
 
 	parser::parser(const std::string& rule)
 		: current_token{ TOKEN_DEFAULT_VALUE }, escaping{ false }, rule{ rule },
-		random_generator{ std::chrono::system_clock::now().time_since_epoch().count() }
+		random_generator{ static_cast<int>(std::chrono::system_clock::now().time_since_epoch().count()) }
 	{
 		this->rule >> std::noskipws;
 		result << std::noskipws;
@@ -25,7 +25,7 @@ namespace simple
 		parse_expression();
 	}
 
-	std::string parser::str() const
+	std::string parser::password() const
 	{
 		return result.str();
 	}
