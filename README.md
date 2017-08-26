@@ -5,11 +5,11 @@ A regex-like-based password generator.
 ### Custom Rule
 "Password that starts with three capitalized letters, followed by one number then followed by any ascii character 5 up to 10 times".  
 *This is an example, and may not be the most secure password*.  
-```simplepass [A-Z]{3}[0-9][a-zA-Z0-9]{5-10}```
-``` ```
+```simplepass [A-Z]{3}[0-9][a-zA-Z0-9]{5-10}```  
+```DJF8SXcOm7265f```
 
 ### Simple / Naive
-```simplepass -l 20 -s```
+```simplepass -l 20 -s```  
 ```yPKt~QRL,DCHt)Gj*:[!```
 
 ## Goal
