@@ -4,23 +4,27 @@
 
 #include <exception>
 #include <iostream>
-#include <iomanip>
 #include <cstring>
 
 int main(int argc, char** argv)
 {
 	if (argc == FIRST_PARAM_POS) {
 		std::cout << "Unsufficient parameters given." << std::endl;
-		std::cout << show_help();
+		std::cout << help();
 		return RETCODE_ERROR;
 	}
 
 	int password_length{ 0 };
 	bool allow_specials{ false };
-	bool is_rule{ false };
+	bool is_rule{ false }, is_help{ false };
 	int index = FIRST_PARAM_POS;
+
+	auto cmdline_continue = [&index, &is_rule, &argc, &is_help]() { 
+		return index < argc && false == is_rule && false == is_help; 
+	};
+
 	try {
-		for ( ; index < argc && false == is_rule; index++) {
+		for ( ; cmdline_continue(); index++) {
 			const char* arg = argv[index];
 			
 			if(same(SWITCH_SHORT_RULE, arg) || same(SWITCH_RULE, arg)) {
@@ -33,16 +37,19 @@ int main(int argc, char** argv)
 				password_length = std::atoi(argv[index + 1]);
 			} else if (same(SWITCH_SHORT_SPECIALS, arg) || same(SWITCH_SPECIALS, arg)) {
 				allow_specials = true;
+			} else if (same(SWITCH_SHORT_HELP, arg) || same(SWITCH_HELP, arg)) {
+				is_help = true;
 			}
 		}
 
-		if (is_rule) {
+		if (is_help) {
+			std::cout << help() << std::endl;
+		} else if (is_rule) {
 			std::cout << try_execute_rule(index, argc, argv);
 		} else {
 			std::cout << execute_basic(password_length, allow_specials);
 		}
-	}
-	catch (std::exception& ex) {
+	} catch (std::exception& ex) {
 		std::cout << ex.what() << std::endl;
 		return RETCODE_ERROR;
 	}
@@ -71,7 +78,7 @@ std::string try_execute_rule(const int current_index, const int argc, char** arg
 	const int next_index = current_index + 1;
 
 	if (next_index == argc)
-		throw std::exception{ "Expected a rule after the '-r' flag." };
+		throw std::exception{ "Expected a rule for rule flag. Use --help." };
 
 	return execute_rule(argv[next_index]);
 }
@@ -87,7 +94,7 @@ bool same(const char* first, const char* second) noexcept
 	return std::strcmp(first, second) == 0;
 }
 
-std::string show_help()
+std::string help()
 {
 	constexpr const char* padw = "    ";
 
