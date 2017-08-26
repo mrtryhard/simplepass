@@ -7,13 +7,15 @@
 #include <random>
 
 namespace simple
-{
+{	
 	class parser final
 	{
+		using set_t = std::vector<char>;
+
 		char current_token;
 		bool escaping;
 		std::stringstream rule;
-		std::stringstream result;
+		std::ostringstream result;
 		std::default_random_engine random_generator;
 	public:
 		explicit parser(const std::string&);
@@ -28,8 +30,8 @@ namespace simple
 		int parse_quantity();
 		bool advance_token();
 
-		void append_random_token_n(const std::vector<char>&, size_t);
-		void append_char_range(std::vector<char>&, char, char) const;
+		void append_random_token_n(const set_t&, size_t);
+		void append_char_range(set_t&, char, char) const;
 	};
 }
 

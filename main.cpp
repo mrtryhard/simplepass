@@ -75,12 +75,10 @@ std::string execute_basic(const int length, const bool allow_specials)
 
 std::string try_execute_rule(const int current_index, const int argc, char** argv)
 {
-	const int next_index = current_index + 1;
-
-	if (next_index == argc)
+	if (current_index == argc)
 		throw std::exception{ "Expected a rule for rule flag. Use --help." };
 
-	return execute_rule(argv[next_index]);
+	return execute_rule(argv[current_index]);
 }
 
 std::string execute_rule(const char* rule)

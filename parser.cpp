@@ -43,7 +43,7 @@ namespace simple
 
 	void parser::parse_set()
 	{
-		std::vector<char> set;
+		set_t set;
 		bool previous_was_range{ false };
 		
 		advance_token();
@@ -72,15 +72,17 @@ namespace simple
 			set.push_back(current_token);
 		} while (advance_token() && false == (current_token == TOKEN_SET_END && false == escaping));
 
-		advance_token();
 		int quantity = parse_quantity();
 		append_random_token_n(set, quantity);
 	}
 
 	int parser::parse_quantity()
 	{
-		if(current_token != TOKEN_QUANTITY_START)
+		advance_token();
+		if(current_token != TOKEN_QUANTITY_START) {
+			rule.unget();
 			return 1;
+		}
 
 		advance_token();
 		if(current_token == TOKEN_QUANTITY_END && false == escaping)
@@ -103,8 +105,6 @@ namespace simple
 				throw std::exception{ "Invalid quantity format specified." };
 			}
 		} while(advance_token() && false == (current_token == TOKEN_QUANTITY_END && false == escaping));
-
-		advance_token();
 
 		if(range_crossed) {
 			number >> upper;
@@ -130,7 +130,7 @@ namespace simple
 		return success;
 	}
 
-	void parser::append_random_token_n(const std::vector<char>& tokens, size_t quantity)
+	void parser::append_random_token_n(const set_t& tokens, size_t quantity)
 	{
 		if(quantity == 0)
 			throw std::exception{ "Quantity cannot be zero (0)." };
@@ -142,7 +142,7 @@ namespace simple
 		}
 	}
 
-	void parser::append_char_range(std::vector<char>& set, char left, char right) const
+	void parser::append_char_range(set_t& set, char left, char right) const
 	{
 		using namespace std;
 		const char upper = max(left, right);
