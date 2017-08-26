@@ -57,8 +57,7 @@ namespace simple
 
 		do {
 
-			if (is_valid_range_token()) 
-			{
+			if (is_valid_range_token()) {
 				char next_token;
 				rule >> next_token;
 
@@ -119,10 +118,11 @@ namespace simple
 
 	bool parser::advance_token()
 	{
+		escaping = false;
 		bool success = static_cast<bool>(rule >> current_token);
-
+		
 		if (current_token == TOKEN_ESCAPE)
-			escaping = !escaping;
+			escaping = true;
 
 		if (escaping)
 			success = static_cast<bool>(rule >> current_token);
