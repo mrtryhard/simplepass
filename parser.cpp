@@ -50,13 +50,14 @@ namespace simple
 
 		if (current_token == TOKEN_SET_END && false == escaping)
 			throw std::exception{ "A set cannot be empty." };
+		
+		auto is_valid_range_token = [&]() {
+			return current_token == TOKEN_RANGE && false == set.empty() && false == previous_was_range && false == escaping;	
+		};
 
 		do {
 
-			if (current_token == TOKEN_RANGE 
-				&& false == set.empty() 
-				&& false == previous_was_range
-				&& false == escaping) 
+			if (is_valid_range_token()) 
 			{
 				char next_token;
 				rule >> next_token;
@@ -131,7 +132,10 @@ namespace simple
 
 	void parser::append_random_token_n(const std::vector<char>& tokens, size_t quantity)
 	{
-		std::uniform_int_distribution<int> distribution{ 0, static_cast<int>(tokens.size()) };
+		if(quantity == 0)
+			throw std::exception{ "Quantity cannot be zero (0)." };
+
+		std::uniform_int_distribution<int> distribution{ 0, static_cast<int>(tokens.size() - 1) };
 
 		for (size_t count{ 0 }; count < quantity; count++) {
 			result << tokens[distribution(random_generator)];

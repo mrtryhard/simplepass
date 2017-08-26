@@ -63,7 +63,6 @@ std::string execute_basic(const int length, const bool allow_specials)
 	}
 
 	rule << "]{" << length << '}';
-	std::cout << rule.str() << std::endl;
 	return execute_rule(rule.str().c_str());
 }
 
