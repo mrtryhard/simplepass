@@ -33,8 +33,6 @@ simplepass -r <rule> | -l <integer> -s -h
 * `-r <rule> | --rule <rule>` Specifies the rule to generate password. Disregards `-l` and `-s` options.  
 * `-h | --help` When passed, shows help. 
 
-`simplepass -l 20 -s` is equivalent to `simplepass -r "\.{20}"`.
-
 ## Recommended compilation settings  
 Works well with Visual Studio Community 2017 (msvc++ and clang3.8).
 
